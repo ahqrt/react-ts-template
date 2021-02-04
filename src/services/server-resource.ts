@@ -7,29 +7,29 @@ import urljoin from 'url-join';
 import { host } from '@src/services/config';
 
 class ServerResource {
-    // 资源路径根路径
-    baseUrl: string;
+  // 资源路径根路径
+  baseUrl: string;
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
-    }
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
-    /**
-     * 获取资源访问路径
-     * @param url
-     */
-    url(url: string): string {
-        if (!url) return;
-        if (/^((https:|http:)?\/\/)/i.test(url)) {
-            return url;
-        } else if (/^data:image/.test(url)) {
-            return url;
-        } else if (url.startsWith(this.baseUrl)) {
-            return url;
-        } else {
-            return urljoin(this.baseUrl, url);
-        }
+  /**
+   * 获取资源访问路径
+   * @param url
+   */
+  url(url: string): string {
+    if (!url) return;
+    if (/^((https:|http:)?\/\/)/i.test(url)) {
+      return url;
+    } else if (/^data:image/.test(url)) {
+      return url;
+    } else if (url.startsWith(this.baseUrl)) {
+      return url;
+    } else {
+      return urljoin(this.baseUrl, url);
     }
+  }
 }
 
 const serverResource = new ServerResource(host);

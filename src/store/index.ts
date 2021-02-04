@@ -15,14 +15,14 @@ export type RootState = RematchRootState<typeof models>;
 export type RootDispatch = RematchRootDispatch<typeof models>;
 
 const store = init({
-    models,
-    plugins: [loading, immer],
-    redux: {
-        middlewares: [routerMiddleware(history)],
-        reducers: {
-            router: connectRouter(history),
-        },
+  models,
+  plugins: [loading, immer],
+  redux: {
+    middlewares: [routerMiddleware(history)],
+    reducers: {
+      router: connectRouter(history),
     },
+  },
 });
 
 export default store;

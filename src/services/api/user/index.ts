@@ -1,8 +1,9 @@
-import axios from 'axios';
-/**
- * @author：姚嘉东
- * @description：
- * @date：2020/3/19
- */
+import request from '@src/services/request';
 // 获取用户信息
-export const getUserInfo = () => axios.post('/getUserInfo');
+export const getAllUserInfo = () => request.get('/users');
+
+export const login = (username: string, password: string) =>
+  request.post('/users/signin', {
+    username,
+    password,
+  });

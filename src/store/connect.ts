@@ -1,9 +1,9 @@
 import {
-    connect as nativeConnect,
-    MapDispatchToPropsParam,
-    MapStateToPropsParam,
-    MergeProps,
-    Options,
+  connect as nativeConnect,
+  MapDispatchToPropsParam,
+  MapStateToPropsParam,
+  MergeProps,
+  Options,
 } from 'react-redux';
 
 export const connect = nativeConnect as any;

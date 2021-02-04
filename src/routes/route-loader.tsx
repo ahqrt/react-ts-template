@@ -22,9 +22,11 @@ import { RouteConfigDeclaration } from '@routes/routes-config';
  * @param extraProps
  */
 export function renderAllRoutes(routesConfig: RouteConfigDeclaration[], extraProps: any = {}) {
-    let routes = renderRoutes(routesConfig, extraProps);
-    let redirect = renderRedirectRoute(routesConfig);
-    return [...routes, redirect];
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const routes = renderRoutes(routesConfig, extraProps);
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  const redirect = renderRedirectRoute(routesConfig);
+  return [...routes, redirect];
 }
 
 /**
@@ -33,17 +35,9 @@ export function renderAllRoutes(routesConfig: RouteConfigDeclaration[], extraPro
  * @param extraProps
  */
 export function renderRoutes(routesConfig: RouteConfigDeclaration[], extraProps: any = {}) {
-    return routesConfig.map((item, index) => {
-        const {
-            path,
-            exact,
-            isProtected,
-            isDynamic,
-            component: Component,
-            routes = [],
-            loadingFallback,
-        } = item;
-        /*if (isRedirect) {
+  return routesConfig.map((item, index) => {
+    const { path, exact, isProtected, isDynamic, component: Component, routes = [], loadingFallback } = item;
+    /*if (isRedirect) {
             // 看 Switch 的源码，就知道为什么这里不能这样写了
             // Switch 里面只能放 Route ，不能放别的，哪怕是 React.Fragment
             return (<React.Fragment key={path} path={path} exact={exact}>
@@ -58,27 +52,27 @@ export function renderRoutes(routesConfig: RouteConfigDeclaration[], extraProps:
                 <Redirect key={path + 'redirect'} to={path}/>
             </React.Fragment>);
         }*/
-        return (
-            <Route
-                key={path}
-                path={path}
-                exact={exact}
-                component={props => {
-                    if (isProtected && !localStorage.getItem('token')) {
-                        return <Redirect key={'login-redirect'} to={'/login'} />;
-                    }
-                    if (isDynamic) {
-                        return (
-                            <React.Suspense fallback={loadingFallback || '正在加载中...'}>
-                                <Component {...props} {...extraProps} routes={routes} />
-                            </React.Suspense>
-                        );
-                    }
-                    return <Component {...props} {...extraProps} routes={routes} />;
-                }}
-            />
-        );
-    });
+    return (
+      <Route
+        key={path}
+        path={path}
+        exact={exact}
+        component={props => {
+          if (isProtected && !localStorage.getItem('token')) {
+            return <Redirect key={'login-redirect'} to={'/login'} />;
+          }
+          if (isDynamic) {
+            return (
+              <React.Suspense fallback={loadingFallback || '正在加载中...'}>
+                <Component {...props} {...extraProps} routes={routes} />
+              </React.Suspense>
+            );
+          }
+          return <Component {...props} {...extraProps} routes={routes} />;
+        }}
+      />
+    );
+  });
 }
 
 /**
@@ -86,6 +80,6 @@ export function renderRoutes(routesConfig: RouteConfigDeclaration[], extraProps:
  * @param routes
  */
 export function renderRedirectRoute(routes: RouteConfigDeclaration[]) {
-    let { path } = routes.find(route => route.isRedirect) || routes[0];
-    return <Redirect key={path + '-redirect'} to={path} />;
+  const { path } = routes.find(route => route.isRedirect) || routes[0];
+  return <Redirect key={path + '-redirect'} to={path} />;
 }

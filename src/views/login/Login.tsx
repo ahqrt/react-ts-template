@@ -1,89 +1,73 @@
-import React from 'react';
-import styles from './login.module.less';
-import logo from '@assets/images/logo.svg';
-import GlobalContext from '@src/common/global-context';
-import { RouteComponentProps } from 'react-router';
+import { ForwardRefComponent, HTMLMotionProps, motion } from 'framer-motion';
+import React, { FC, useState } from 'react';
+import { login } from '../../services/api/user/index';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import axiosInstance from '@src/services/request';
 
-import { RootDispatch, RootState } from '@src/store';
-import { connect } from '@store/connect';
+const CellPhoneInput: ForwardRefComponent<HTMLInputElement, HTMLMotionProps<'input'>> = styled(motion.input)`
+  width: 300px;
+  border: 1px solid #ccc;
+  height: 30px;
+  padding-left: 4px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  &:focus {
+    outline: none;
+  }
+`;
 
-function mapStateToProps(state: RootState) {
-    const {
-        login: { count },
-    } = state;
-    return { count };
-}
+const Button: ForwardRefComponent<HTMLButtonElement, HTMLMotionProps<'button'>> = styled(motion.button)`
+  width: 300px;
+  height: 30px;
+  background-color: #de6449;
+  border-radius: 10px;
+  transition: 0.3s;
+  &:hover {
+    transform: scale(1.05);
+  }
+  &:focus {
+    transform: scale(0.95);
+    outline: none;
+  }
+`;
 
-function mapDispatchToProps(dispatch: RootDispatch) {
-    const { login } = dispatch;
-    return {
-        increment: login.INCREMENT,
-        decrement: login.decrement,
-    };
-}
+const Login: FC = () => {
+  const history = useHistory();
+  const [username, setusername] = useState('');
+  const [password, setpassword] = useState('');
 
-/**
- * 路由参数 Props 类型声明
- */
-type RouterProps = RouteComponentProps<any>;
-
-/**
- * 映射状态（从 store 中获取某些状态并传递给当前组件）类型声明
- */
-type MapStateFromStoreProps = ReturnType<typeof mapStateToProps>;
-/**
- * 组件派发 action 集合的类型声明
- */
-type ComponentDispatchProps = ReturnType<typeof mapDispatchToProps>;
-
-/**
- * 组件最终接收的所有 Props 类型声明
- */
-type LoginProps = RouterProps &
-    MapStateFromStoreProps &
-    ComponentDispatchProps & {
-        routes?: any;
-        count?: number;
-    };
-
-@connect(mapStateToProps, mapDispatchToProps)
-export default class Login extends React.Component<LoginProps> {
-    static contextType = GlobalContext;
-    constructor(props, context) {
-        super(props, context);
+  const handleLogin = async () => {
+    const data = await login(username, password);
+    const token = data.headers['x-access-token'];
+    if (token) {
+      window.localStorage.setItem('X-Access-Token', token);
     }
-
-    handleLinkBtnClick = () => {
-        this.props.history.push('/home');
-    };
-
-    handleAddBtnClick = () => {
-        this.props.increment();
-    };
-
-    handleDecreaseBtnClick = () => {
-        this.props.decrement();
-    };
-
-    render() {
-        const { count } = this.props;
-        return (
-            <div className={styles.container}>
-                <header className={styles.header}>
-                    <img src={logo} className={styles.logo} alt="logo" />
-                    <p>This is Login Page </p>
-                    <p className={styles.btn} onClick={this.handleLinkBtnClick}>
-                        Go to <span className={styles.pageName}>Home</span> Page
-                    </p>
-                    <p className={styles.btn} onClick={this.handleAddBtnClick}>
-                        Add Btn
-                    </p>
-                    <p className={styles.btn} onClick={this.handleDecreaseBtnClick}>
-                        Decrease Btn
-                    </p>
-                    <p>count : {count}</p>
-                </header>
-            </div>
-        );
+    if (data.data.code === 200) {
+      setTimeout(() => {
+        history.push('/home');
+      }, 500);
     }
-}
+  };
+
+  return (
+    <div className="w-full h-full flex justify-center items-center flex-col">
+      <div>Login</div>
+      <CellPhoneInput
+        type="text"
+        placeholder="请输入用户名"
+        value={username}
+        onChange={e => setusername(e.target.value)}
+      ></CellPhoneInput>
+      <CellPhoneInput
+        type="password"
+        placeholder="请输入密码"
+        value={password}
+        onChange={e => setpassword(e.target.value)}
+      ></CellPhoneInput>
+      <Button onClick={handleLogin}>Login</Button>
+    </div>
+  );
+};
+
+export default Login;

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /**
  * 样式
  */
@@ -29,21 +30,21 @@ import history from '@store/history';
 // import App from './App';
 
 function renderApp() {
-    ReactDOM.render(
-        <ConfigProvider locale={zh_CN}>
-            <Provider store={store}>
-                {/*<BrowserRouter>{renderRoutes(routesConfig)}</BrowserRouter>*/}
-                <ConnectedRouter history={history}>{renderRoutes(routesConfig)}</ConnectedRouter>
-            </Provider>
-        </ConfigProvider>,
-        document.getElementById('root'),
-    );
+  ReactDOM.render(
+    <ConfigProvider locale={zh_CN}>
+      <Provider store={store}>
+        {/*<BrowserRouter>{renderRoutes(routesConfig)}</BrowserRouter>*/}
+        <ConnectedRouter history={history}>{renderRoutes(routesConfig)}</ConnectedRouter>
+      </Provider>
+    </ConfigProvider>,
+    document.getElementById('root'),
+  );
 }
 
 renderApp();
 
 if (process.env.NODE_ENV === 'development') {
-    if (module.hot) {
-        module.hot.accept();
-    }
+  if (module.hot) {
+    module.hot.accept();
+  }
 }

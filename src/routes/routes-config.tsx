@@ -13,107 +13,95 @@ import React from 'react';
 import App from '@src/entry/App';
 
 export interface RouteConfigDeclaration {
-    /**
-     * 当前路由路径
-     */
-    path: string;
-    /**
-     * 当前路由名称
-     */
-    name?: string;
-    /**
-     * 是否严格匹配路由
-     */
-    exact?: boolean;
-    /**
-     * 是否需要路由鉴权
-     */
-    isProtected?: boolean;
-    /**
-     * 是否需要路由重定向
-     */
-    isRedirect?: boolean;
-    /**
-     * 是否需要动态加载路由
-     */
-    isDynamic?: boolean;
-    /**
-     * 动态加载路由时的提示文案
-     */
-    loadingFallback?: string;
-    /**
-     * 路由组件
-     */
-    component: any;
-    /**
-     * 子路由
-     */
-    routes?: RouteConfigDeclaration[];
+  /**
+   * 当前路由路径
+   */
+  path: string;
+  /**
+   * 当前路由名称
+   */
+  name?: string;
+  /**
+   * 是否严格匹配路由
+   */
+  exact?: boolean;
+  /**
+   * 是否需要路由鉴权
+   */
+  isProtected?: boolean;
+  /**
+   * 是否需要路由重定向
+   */
+  isRedirect?: boolean;
+  /**
+   * 是否需要动态加载路由
+   */
+  isDynamic?: boolean;
+  /**
+   * 动态加载路由时的提示文案
+   */
+  loadingFallback?: string;
+  /**
+   * 路由组件
+   */
+  component: any;
+  /**
+   * 子路由
+   */
+  routes?: RouteConfigDeclaration[];
 }
 
 export const routesConfig: RouteConfigDeclaration[] = [
-    {
-        path: '/',
-        name: 'root-route',
-        component: App,
-        routes: [
-            {
-                path: '/home',
-                // exact: true,
-                isDynamic: true,
-                // loadingFallback: '不一样的 loading 内容...',
-                // component: Home,
-                // component: React.lazy(
-                //     () =>
-                //         new Promise(resolve =>
-                //             setTimeout(
-                //                 () =>
-                //                     resolve(
-                //                       import(/* webpackChunkName: "home"*/ '@src/views/home/Home'),
-                //                     ),
-                //                 2000,
-                //             ),
-                //         ),
-                // ),
-                component: React.lazy(() =>
-                    import(/* webpackChunkName: "home"*/ '@src/views/home/Home'),
-                ),
-                routes: [
-                    {
-                        path: '/home/child-one',
-                        isDynamic: true,
-                        component: React.lazy(() =>
-                            import(/* webpackChunkName: "child-one" */ '@src/views/home/ChildOne'),
-                        ),
-                    },
-                    {
-                        path: '/home/child-two',
-                        isRedirect: true,
-                        isDynamic: true,
-                        component: React.lazy(() =>
-                            import(/* webpackChunkName: "child-two" */ '@src/views/home/ChildTwo'),
-                        ),
-                    },
-                ],
-            },
-            {
-                path: '/login',
-                isDynamic: true,
-                isRedirect: true,
-                component: React.lazy(() =>
-                    import(
-                        /* webpackChunkName: "login" */
-                        '@src/views/login/Login'
-                    ),
-                ),
-            },
-            {
-                path: '/register',
-                isDynamic: true,
-                component: React.lazy(() =>
-                    import(/* webpackChunkName: "register"*/ '@src/views/register/Register'),
-                ),
-            },
-        ],
-    },
+  {
+    path: '/',
+    name: 'root-route',
+    component: App,
+    routes: [
+      //   {
+      //     path: '/home',
+      //     // exact: true,
+      //     isDynamic: true,
+      //     component: React.lazy(() => import(/* webpackChunkName: "home"*/ '@src/views/home/Home')),
+      //     routes: [
+      //       {
+      //         path: '/home/child-one',
+      //         isDynamic: true,
+      //         component: React.lazy(() =>
+      //           import(/* webpackChunkName: "child-one" */ '@src/views/home/ChildOne'),
+      //         ),
+      //       },
+      //       {
+      //         path: '/home/child-two',
+      //         isRedirect: true,
+      //         isDynamic: true,
+      //         component: React.lazy(() =>
+      //           import(/* webpackChunkName: "child-two" */ '@src/views/home/ChildTwo'),
+      //         ),
+      //       },
+      //     ],
+      //   },
+      {
+        path: '/home',
+        isDynamic: true,
+        isRedirect: true,
+        component: React.lazy(() =>
+          import(
+            /* webpackChunkName: "login" */
+            '@src/views/home/Home'
+          ),
+        ),
+      },
+      {
+        path: '/login',
+        isDynamic: true,
+        isRedirect: true,
+        component: React.lazy(() =>
+          import(
+            /* webpackChunkName: "login" */
+            '@src/views/login/Login'
+          ),
+        ),
+      },
+    ],
+  },
 ];

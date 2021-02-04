@@ -7,24 +7,24 @@ import { connect } from 'react-redux';
 // import * as utils from "@src/utils";
 
 interface AppProps {
-    routes?: any;
+  routes?: any;
 }
 class App extends React.PureComponent<AppProps> {
-    globalContext;
+  globalContext;
 
-    constructor(props) {
-        super(props);
-        this.globalContext = {};
-    }
+  constructor(props) {
+    super(props);
+    this.globalContext = {};
+  }
 
-    render() {
-        const routes = renderAllRoutes(this.props.routes);
-        return (
-            <GlobalContext.Provider value={this.globalContext}>
-                <Switch>{routes}</Switch>
-            </GlobalContext.Provider>
-        );
-    }
+  render() {
+    const routes = renderAllRoutes(this.props.routes);
+    return (
+      <GlobalContext.Provider value={this.globalContext}>
+        <Switch>{routes}</Switch>
+      </GlobalContext.Provider>
+    );
+  }
 }
 
 export default App;
